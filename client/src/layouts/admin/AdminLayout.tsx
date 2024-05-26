@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UserOutlined,
-  SettingOutlined
+  SettingOutlined,
 } from '@ant-design/icons';
 import {
   Layout,
@@ -18,6 +18,8 @@ import {
 import { Outlet } from 'react-router-dom';
 import { MenuItem } from './menuItem';
 import './style.scss';
+import { logOut, parseJSON } from '../../utils/handleData';
+import { USER_INFO_KEY } from '../../constants/localStorageKey';
 
 const { Header, Sider, Content } = Layout;
 const { Paragraph } = Typography;
@@ -27,6 +29,38 @@ type AdminLayoutProps = {
 };
 
 const AdminLayout: React.FC<AdminLayoutProps> = () => {
+  const menuItem = useMemo(() => {
+    let customerData = parseJSON(localStorage.getItem(USER_INFO_KEY), {});
+
+    if (customerData?.isMainAdmin) {
+      return MenuItem;
+    }
+
+    const roleList = customerData?.roleList;
+
+    const filterChildren = MenuItem?.map((item: any) => {
+      if (!item?.children) {
+        return item;
+      }
+      return {
+        ...item,
+        children: roleList?.includes(item?.key)
+          ? item?.children
+          : [...item?.children]?.filter((it: any) =>
+              roleList?.includes(it?.key)
+            ),
+      };
+    });
+
+    const filterMenu = [...filterChildren]?.filter(
+      (item: any) =>
+        roleList?.includes(item?.key) ||
+        item?.children?.find((it: any) => roleList?.includes(it?.key))
+    );
+
+    return filterMenu;
+  }, []);
+
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -44,7 +78,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = () => {
     {
       key: '2',
       label: (
-        <a href='/logout' className='text-base'>
+        <a href='/admin/login' className='text-base' onClick={() => logOut()}>
           Đăng xuất
         </a>
       ),
@@ -53,9 +87,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = () => {
 
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed} className='min-h-[100vh] max-h-[100vh]'>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        className='min-h-[100vh] max-h-[100vh]'
+      >
         <div className='flex mb-[50px] mt-[40px] items-center justify-center'>
-          <SettingOutlined className='text-white text-lg'/>
+          <SettingOutlined className='text-white text-lg' />
           {!collapsed ? (
             <Paragraph className='text-white text-lg !mb-0 tracking-widest font-bold ml-[10px]'>
               QUẢN TRỊ
@@ -68,7 +107,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = () => {
           theme='dark'
           mode='inline'
           defaultSelectedKeys={['1']}
-          items={MenuItem}
+          items={menuItem}
           className='text-base'
         />
       </Sider>

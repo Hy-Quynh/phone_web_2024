@@ -1,7 +1,11 @@
-import { Button, Form, Grid, Input, theme, Typography } from 'antd';
+import { Button, Form, Grid, Input, message, theme, Typography } from 'antd';
 import { LockOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import './style.scss';
 import { ROUTER } from '../../enums/router';
+import { userAPI } from '../../services/user';
+import { useNavigate } from 'react-router-dom';
+import { adminAPI } from '../../services/admin';
+import { USER_INFO_KEY } from '../../constants/localStorageKey';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -14,9 +18,42 @@ type LoginPageType = {
 export default function LoginPage({ isAdmin }: LoginPageType) {
   const { token } = useToken();
   const screens = useBreakpoint();
+  const navigate = useNavigate();
 
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+  const onFinish = async (values: any) => {
+    try {
+      const signUpData = {
+        email: values?.email,
+        password: values?.password,
+      };
+
+      if (!isAdmin) {
+        const res = await userAPI.userLogin(signUpData);
+
+        if (res?.data?.success) {
+          localStorage.setItem(USER_INFO_KEY, JSON.stringify(res?.data?.payload));
+          message.success('Đăng nhập thành công. Chuyển sang trang chủ');
+          setTimeout(() => {
+            navigate('/');
+          }, 1000);
+        } else {
+          message.error(res?.data?.error?.message || 'Đăng nhập thất bại');
+        }
+      } else {
+        const res = await adminAPI.adminLogin(signUpData);
+        if (res?.data?.success) {
+          localStorage.setItem(USER_INFO_KEY, JSON.stringify(res?.data?.payload));
+          message.success('Đăng nhập thành công. Chuyển sang trang quản trị');
+          setTimeout(() => {
+            navigate('/admin');
+          }, 1000);
+        } else {
+          message.error(res?.data?.error?.message || 'Đăng nhập thất bại');
+        }
+      }
+    } catch (error) {
+      message.error('Đăng nhập thất bại');
+    }
   };
 
   const styles = {
@@ -65,7 +102,7 @@ export default function LoginPage({ isAdmin }: LoginPageType) {
             <SettingOutlined style={styles.adminSettingIcon} />
           ) : (
             <div className='logo mb-[10px]'>
-              <a href='' className='text-decoration-none'>
+              <a href='/' className='text-decoration-none'>
                 <span className='h1 text-uppercase text-primary bg-dark px-2 text-base'>
                   PHONE
                 </span>
@@ -126,18 +163,26 @@ export default function LoginPage({ isAdmin }: LoginPageType) {
               href={
                 isAdmin ? ROUTER.ADMIN_FORGOT_PASSWORD : ROUTER.FORGOT_PASSWORD
               }
+              className={isAdmin ? 'text-white' : ''}
             >
               Quên mật khẩu?
             </a>
           </div>
           <Form.Item style={{ marginBottom: '0px' }}>
-            <Button block={true} type='primary' htmlType='submit'>
+            <Button
+              block={true}
+              type='primary'
+              htmlType='submit'
+              className='bg-[#FFD334] text-[#3D464D] font-bold hover:!bg-[#FFD334] hover:!text-[#3D464D]'
+            >
               Đăng nhập
             </Button>
             {!isAdmin ? (
               <div style={styles.footer} className='footer'>
                 <Text style={styles.text}>Bạn chưa có tài khoản?</Text>{' '}
-                <Link href={ROUTER.REGISTER}>Đăng ký ngay</Link>
+                <Link href={ROUTER.REGISTER} className='!text-[#fab504]'>
+                  Đăng ký ngay
+                </Link>
               </div>
             ) : (
               <></>

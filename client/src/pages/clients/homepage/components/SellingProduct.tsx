@@ -41,6 +41,7 @@ export default function SellingProduct() {
       <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
         <span className="bg-secondary pr-3">Sản phẩm bán chạy</span>
       </h2>
+      <p className="mb-[20px]">(Chưa gán data thật)</p>
       <div className="row px-xl-5">
         {listSellingProduct?.map((item, index) => {
           return (

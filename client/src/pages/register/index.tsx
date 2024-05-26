@@ -1,7 +1,11 @@
-import { Button, Form, Grid, Input, theme, Typography } from 'antd';
+import { Button, Form, Grid, Input, message, theme, Typography } from 'antd';
 import { LockOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import './style.scss';
 import { ROUTER } from '../../enums/router';
+import { validateEmail } from '../../utils/validate';
+import { UserCreateBody } from '../../types/user';
+import { userAPI } from '../../services/user';
+import { useNavigate } from 'react-router-dom';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -11,9 +15,34 @@ export default function RegisterPage() {
   const { token } = useToken();
   const screens = useBreakpoint();
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+  const onFinish = async (values: any) => {
+    try {
+      const signUpData: UserCreateBody = {
+        email: values?.email,
+        phone: values?.phone,
+        password: values?.password,
+      };
+
+      const res = await userAPI.userSignUp(signUpData);
+      if (res?.data?.success) {
+        message.success(
+          'Thêm thông tin người dùng thành công. Chuyển sang trang đăng nhập'
+        );
+        setTimeout(() => {
+          navigate('/login');
+        }, 1000);
+      } else {
+        message.error(
+          res?.data?.error?.message || 'Thêm thông tin người dùng thất bại'
+        );
+      }
+    } catch (error: any) {
+      message.error(
+        'Thêm thông tin người dùng thất bại'
+      );
+    }
   };
 
   const styles = {
@@ -54,7 +83,7 @@ export default function RegisterPage() {
       <div style={styles.container}>
         <div style={styles.header}>
           <div className='logo mb-[10px]'>
-            <a href='' className='text-decoration-none'>
+            <a href='/' className='text-decoration-none'>
               <span className='h1 text-uppercase text-primary bg-dark px-2 text-base'>
                 PHONE
               </span>
@@ -82,7 +111,7 @@ export default function RegisterPage() {
               {
                 type: 'email',
                 required: true,
-                message: 'Vui lòng nhập vào email',
+                message: 'Email sai định dạng',
               },
             ]}
           >
@@ -144,12 +173,19 @@ export default function RegisterPage() {
             />
           </Form.Item>
           <Form.Item style={{ marginBottom: '0px' }}>
-            <Button block={true} type='primary' htmlType='submit'>
+            <Button
+              block={true}
+              type='primary'
+              htmlType='submit'
+              className='bg-[#FFD334] text-[#3D464D] font-bold hover:!bg-[#FFD334] hover:!text-[#3D464D]'
+            >
               Đăng ký
             </Button>
             <div style={styles.footer} className='footer'>
               <Text style={styles.text}>Bạn đã có tài khoản?</Text>{' '}
-              <Link href={ROUTER.LOGIN}>Đăng nhập ngay</Link>
+              <Link href={ROUTER.LOGIN} className='!text-[#fab504]'>
+                Đăng nhập ngay
+              </Link>
             </div>
           </Form.Item>
         </Form>

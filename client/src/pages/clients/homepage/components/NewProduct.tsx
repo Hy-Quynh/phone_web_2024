@@ -1,57 +1,42 @@
-import ProductItem from "../../../../components/productItem";
+import { useEffect, useState } from 'react';
+import ProductItem from '../../../../components/productItem';
+import { productAPI } from '../../../../services/product';
 
 export default function NewProduct() {
-  const listProduct = [
-    {
-      _id: '1',
-      product_image: 'https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png',
-      product_name: 'Iphone 15',
-      product_price: '25.000.000',
-      sale_price: 0,
-      current_quantity: 10
-    },
-    {
-      _id: '2',
-      product_image: 'https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png',
-      product_name: 'Iphone 15',
-      product_price: '25.000.000',
-      sale_price: 0,
-      current_quantity: 10
-    },
-    {
-      _id: '3',
-      product_image: 'https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png',
-      product_name: 'Iphone 15',
-      product_price: '25.000.000',
-      sale_price: 0,
-      current_quantity: 10
-    },
-    {
-      _id: '4',
-      product_image: 'https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png',
-      product_name: 'Iphone 15',
-      product_price: '25.000.000',
-      sale_price: 0,
-      current_quantity: 10
+  const [productList, setProductList] = useState<any>([]);
+
+  const getProductList = async () => {
+    try {
+      const res = await productAPI.getAllProduct(16, 0);
+
+      if (res?.data?.success) {
+        setProductList(res?.data?.payload?.product);
+      }
+    } catch (error) {
+      console.log('get product list error >>> ', error);
     }
-  ]
+  };
+
+  useEffect(() => {
+    getProductList();
+  }, []);
 
   return (
-    <div className="container-fluid pt-5 pb-3">
-      <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
-        <span className="bg-secondary pr-3">Sản phẩm mới</span>
+    <div className='container-fluid pt-5 pb-3'>
+      <h2 className='section-title position-relative text-uppercase mx-xl-5 mb-4'>
+        <span className='bg-secondary pr-3'>Sản phẩm mới</span>
       </h2>
-      <div className="row px-xl-5">
-        {listProduct?.map((item, index) => {
+      <div className='row px-xl-5'>
+        {productList?.map((item: any, index: number) => {
           return (
             <ProductItem
               productId={item?._id}
-              productImage={item?.product_image}
-              productName={item?.product_name}
-              productPrice={item?.product_price}
-              salePrice={item?.sale_price}
-              productQuantity={item?.current_quantity}
-              key={`product-item-${index}`}
+              productImage={item?.image}
+              productName={item?.name}
+              productPrice={item?.price}
+              salePrice={item?.salePrice}
+              productQuantity={item?.currentQuantity}
+              key={`product-item-${item?._id}`}
             />
           );
         })}

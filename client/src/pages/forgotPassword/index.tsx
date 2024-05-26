@@ -1,5 +1,5 @@
 import { Button, Form, Grid, Input, theme, Typography } from 'antd';
-import { MailOutlined } from '@ant-design/icons';
+import { MailOutlined, SettingOutlined } from '@ant-design/icons';
 import './style.scss';
 import { ROUTER } from '../../enums/router';
 
@@ -51,13 +51,17 @@ export default function ForgotPasswordPage({ isAdmin }: ForgotPasswordType) {
       fontSize: screens.md ? token.fontSizeHeading2 : token.fontSizeHeading3,
       color: isAdmin ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.88)',
     },
+    adminSettingIcon: {
+      fontSize: '32px',
+      color: 'rgba(255, 255, 255, 0.85)',
+    },
   };
 
   return (
     <section style={styles.section} className='forgot-password-page'>
       <div style={styles.container}>
         <div style={styles.header}>
-          <div className='logo mb-[10px]'>
+          {/* <div className='logo mb-[10px]'>
             <a href='' className='text-decoration-none'>
               <span className='h1 text-uppercase text-primary bg-dark px-2 text-base'>
                 PHONE
@@ -66,7 +70,21 @@ export default function ForgotPasswordPage({ isAdmin }: ForgotPasswordType) {
                 STORE
               </span>
             </a>
-          </div>
+          </div> */}
+          {isAdmin ? (
+            <SettingOutlined style={styles.adminSettingIcon} />
+          ) : (
+            <div className='logo mb-[10px]'>
+              <a href='/' className='text-decoration-none'>
+                <span className='h1 text-uppercase text-primary bg-dark px-2 text-base'>
+                  PHONE
+                </span>
+                <span className='h1 text-uppercase text-dark bg-primary px-2 ml-n1 text-base'>
+                  STORE
+                </span>
+              </a>
+            </div>
+          )}
 
           <Title style={styles.title}>QUÊN MẬT KHẨU</Title>
           <Text style={styles.text}>
@@ -95,12 +113,20 @@ export default function ForgotPasswordPage({ isAdmin }: ForgotPasswordType) {
             <Input prefix={<MailOutlined />} placeholder='Nhập vào email' />
           </Form.Item>
           <Form.Item style={{ marginBottom: '0px' }}>
-            <Button block={true} type='primary' htmlType='submit'>
+            <Button
+              block={true}
+              type='primary'
+              htmlType='submit'
+              className='bg-[#FFD334] text-[#3D464D] font-bold hover:!bg-[#FFD334] hover:!text-[#3D464D]'
+            >
               Gửi OTP
             </Button>
             <div style={styles.footer} className='footer'>
               <Text style={styles.text}>Quay lại trang đăng nhập</Text>{' '}
-              <Link href={isAdmin ? ROUTER.ADMIN_LOGIN : ROUTER.LOGIN}>
+              <Link
+                href={isAdmin ? ROUTER.ADMIN_LOGIN : ROUTER.LOGIN}
+                className='!text-[#fab504]'
+              >
                 Đăng nhập
               </Link>
             </div>

@@ -1,7 +1,65 @@
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { logOut, parseJSON } from '../../utils/handleData';
+import {
+  USER_CART_INFO,
+  USER_INFO_KEY,
+} from '../../constants/localStorageKey';
+import { categoryAPI } from '../../services/category';
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [categoryOption, setCategoryOption] = useState([]);
+  const [cartQuantity, setCartQuantity] = useState(0);
+  const [searchText, setSearchText] = useState('');
+  const userData = parseJSON(localStorage.getItem(USER_INFO_KEY));
+
+  const getlistCategory = async () => {
+    try {
+      const categoryRes = await categoryAPI.getAllCategory();
+      if (categoryRes?.data?.success) {
+        const payload = categoryRes?.data?.payload?.category;
+
+        const option = payload?.map((item: any, index: number) => {
+          return {
+            label: item?.name,
+            value: item?._id,
+          };
+        });
+        setCategoryOption(option);
+      }
+    } catch (error) {
+      console.log('get list brand error >>> ', error);
+    }
+  };
+
+  useEffect(() => {
+    getlistCategory();
+  }, []);
+
+  useEffect(() => {
+    const changeQuantityInCart = () => {
+      const cartData =
+        parseJSON(
+          localStorage.getItem(USER_CART_INFO + `_${userData?._id || ''}`)
+        ) || [];
+      setCartQuantity(cartData?.length);
+    };
+    changeQuantityInCart();
+    window.addEventListener('storage', changeQuantityInCart);
+    return () => {
+      window.removeEventListener('storage', changeQuantityInCart);
+    };
+  }, []);
+
+  useEffect(() => {
+    const params: any = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop: any) => searchParams.get(prop),
+    });
+    const search = params?.search || '';
+    setSearchText(search);
+  }, []);
 
   return (
     <div>
@@ -26,43 +84,56 @@ export default function Header() {
                   className='btn btn-sm btn-light dropdown-toggle'
                   data-toggle='dropdown'
                 >
-                  Tài khoản
+                  {userData?._id ? 'Trang cá nhân' : 'Tài khoản'}
                 </button>
-                <div className='dropdown-menu dropdown-menu-right'>
-                  <button
-                    className='dropdown-item'
-                    type='button'
-                    onClick={() => navigate('/login')}
-                  >
-                    Đăng nhập
-                  </button>
-                  <button
-                    className='dropdown-item'
-                    type='button'
-                    onClick={() => navigate('/register')}
-                  >
-                    Đăng ký
-                  </button>
-                </div>
+                {userData?._id ? (
+                  <div className='dropdown-menu dropdown-menu-right'>
+                    <button
+                      className='dropdown-item'
+                      type='button'
+                      onClick={() => navigate('/personal')}
+                    >
+                      Trang cá nhân
+                    </button>
+                    <button
+                      className='dropdown-item'
+                      type='button'
+                      onClick={() => {
+                        logOut();
+                        navigate('/');
+                      }}
+                    >
+                      Đăng xuất
+                    </button>
+                  </div>
+                ) : (
+                  <div className='dropdown-menu dropdown-menu-right'>
+                    <button
+                      className='dropdown-item'
+                      type='button'
+                      onClick={() => navigate('/login')}
+                    >
+                      Đăng nhập
+                    </button>
+                    <button
+                      className='dropdown-item'
+                      type='button'
+                      onClick={() => navigate('/signup')}
+                    >
+                      Đăng ký
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
-            <div className='d-inline-flex align-items-center d-block d-lg-none'>
-              <a href='' className='btn px-0 ml-2'>
-                <i className='fas fa-heart text-dark' />
-                <span
-                  className='badge text-dark border border-dark rounded-circle'
-                  style={{ paddingBottom: 2 }}
-                >
-                  0
-                </span>
-              </a>
+            <div className='d-inline-flex align-items-center d-block '>
               <a href='/cart' className='btn px-0 ml-2'>
                 <i className='fas fa-shopping-cart text-dark' />
                 <span
                   className='badge text-dark border border-dark rounded-circle'
                   style={{ paddingBottom: 2 }}
                 >
-                  0
+                  {cartQuantity || 0}
                 </span>
               </a>
             </div>
@@ -70,9 +141,9 @@ export default function Header() {
         </div>
         <div className='row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex'>
           <div className='col-lg-4'>
-            <a href='' className='text-decoration-none'>
+            <a href='/' className='text-decoration-none'>
               <span className='h1 text-uppercase text-primary bg-dark px-2'>
-                PHONE
+                STONE
               </span>
               <span className='h1 text-uppercase text-dark bg-primary px-2 ml-n1'>
                 STORE
@@ -86,10 +157,25 @@ export default function Header() {
                   type='text'
                   className='form-control'
                   placeholder='Nhập vào tên sản phẩm'
+                  value={searchText}
+                  onChange={(event) => setSearchText(event.target.value)}
                 />
                 <div
                   className='input-group-append'
                   style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    if (location?.pathname?.indexOf('product') >= 0) {
+                      const urlParams = new URLSearchParams(
+                        window.location.search
+                      );
+                      urlParams.set('search', searchText);
+                      setTimeout(() => {
+                        window.location.search = urlParams as any;
+                      }, 500);
+                    } else {
+                      navigate(`/product?search=${searchText}`);
+                    }
+                  }}
                 >
                   <span className='input-group-text bg-transparent text-primary'>
                     <i className='fa fa-search' />
@@ -108,108 +194,37 @@ export default function Header() {
       {/* Navbar Start */}
       <div className='container-fluid bg-dark mb-30'>
         <div className='row px-xl-5'>
-          <div className='col-lg-3 d-none d-lg-block'>
+          <div className='flex justify-start items-center w-full p-[20px] flex-wrap md:gap-x-[50px] gap-x-[20px] gap-y-[10px]'>
             <a
-              className='btn d-flex align-items-center justify-content-between bg-primary w-100'
-              data-toggle='collapse'
-              href='#navbar-vertical'
-              style={{ height: 65, padding: '0 30px' }}
+              href='/'
+              className='cursor-pointer text-white hover:no-underline md:text-xl text-sm'
             >
-              <h6 className='text-dark m-0'>
-                <i className='fa fa-bars mr-2' />
-                Thương hiệu
-              </h6>
-              <i className='fa fa-angle-down text-dark' />
+              Trang chủ
             </a>
-            <nav
-              className='collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light'
-              id='navbar-vertical'
-              style={{ width: 'calc(100% - 30px)', zIndex: 999 }}
+            {categoryOption?.map((item: any) => {
+              return (
+                <div
+                  onClick={() => {
+                    if (item?.value !== -1) {
+                      navigate(`/product?category=${item?.value}`);
+                    } else {
+                      navigate(`/product`);
+                    }
+
+                    window.location.reload();
+                  }}
+                  className='cursor-pointer text-white  md:text-xl text-sm'
+                >
+                  {item?.label}
+                </div>
+              );
+            })}
+            <a
+              href='/post'
+              className='cursor-pointer text-white hover:no-underline  md:text-xl text-sm'
             >
-              <div className='navbar-nav w-100'>
-                <a
-                  href=''
-                  className='nav-item nav-link'
-                  style={{ cursor: 'pointer' }}
-                >
-                  SamSung
-                </a>
-                <a
-                  href=''
-                  className='nav-item nav-link'
-                  style={{ cursor: 'pointer' }}
-                >
-                  Apple
-                </a>
-              </div>
-            </nav>
-          </div>
-          <div className='col-lg-9'>
-            <nav className='navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0'>
-              <a href='' className='text-decoration-none d-block d-lg-none'>
-                <span className='h1 text-uppercase text-dark bg-light px-2'>
-                  STONE
-                </span>
-                <span className='h1 text-uppercase text-light bg-primary px-2 ml-n1'>
-                  STORE
-                </span>
-              </a>
-              <button
-                type='button'
-                className='navbar-toggler'
-                data-toggle='collapse'
-                data-target='#navbarCollapse'
-              >
-                <span className='navbar-toggler-icon' />
-              </button>
-              <div
-                className='collapse navbar-collapse justify-content-between'
-                id='navbarCollapse'
-              >
-                <div className='navbar-nav mr-auto py-0'>
-                  <a href='/' className='nav-item nav-link'>
-                    Trang chủ
-                  </a>
-                  <a
-                    href=''
-                    className='nav-item nav-link'
-                    style={{ cursor: 'pointer' }}
-                  >
-                    Điện thoại
-                  </a>
-                  <a
-                    href=''
-                    className='nav-item nav-link'
-                    style={{ cursor: 'pointer' }}
-                  >
-                    Tai nghe
-                  </a>
-                  <a href='/blog' className='nav-item nav-link'>
-                    Bài viết
-                  </a>
-                </div>
-                <div className='navbar-nav ml-auto py-0 d-none d-lg-block'>
-                  {/* <a href="" className="btn px-0">
-                    <i className="fas fa-heart text-primary" />
-                    <span
-                      className="badge text-secondary border border-secondary rounded-circle"
-                      style={{ paddingBottom: 2 }}
-                    >
-                      0
-                    </span>
-                  </a> */}
-                  <a href='/cart' className='btn px-0 ml-3'>
-                    <i className='fas fa-shopping-cart text-primary' />
-                    <span
-                      className='badge text-secondary border border-secondary rounded-circle'
-                      style={{ paddingBottom: 2 }}
-                    >
-                      {0}
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </nav>
+              Bài viết
+            </a>
           </div>
         </div>
       </div>
