@@ -5,7 +5,7 @@ import { addProductToCart, parseJSON } from '../../../utils/handleData';
 import {
   FORMAT_NUMBER,
   USER_INFO_KEY,
-} from '../../../constants/localStorageKey';
+} from '../../../constants';
 import { productAPI } from '../../../services/product';
 import { message } from 'antd';
 import ProductItem from '../../../components/productItem';

@@ -4,7 +4,7 @@ import { StarOutlined, StarFilled, DeleteFilled } from '@ant-design/icons';
 import { commentAPI } from '../../../../services/comment';
 import { Button, Pagination, message } from 'antd';
 import { parseJSON } from '../../../../utils/handleData';
-import { USER_INFO_KEY } from '../../../../constants/localStorageKey';
+import { USER_INFO_KEY } from '../../../../constants';
 import { displayDate } from '../../../../utils/datetime';
 
 const REVIEW_IN_PAGE = 12;

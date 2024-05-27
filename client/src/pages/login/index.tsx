@@ -5,7 +5,7 @@ import { ROUTER } from '../../enums/router';
 import { userAPI } from '../../services/user';
 import { useNavigate } from 'react-router-dom';
 import { adminAPI } from '../../services/admin';
-import { USER_INFO_KEY } from '../../constants/localStorageKey';
+import { USER_INFO_KEY } from '../../constants';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;

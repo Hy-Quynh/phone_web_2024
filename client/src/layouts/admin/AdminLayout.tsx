@@ -19,7 +19,7 @@ import { Outlet } from 'react-router-dom';
 import { MenuItem } from './menuItem';
 import './style.scss';
 import { logOut, parseJSON } from '../../utils/handleData';
-import { USER_INFO_KEY } from '../../constants/localStorageKey';
+import { USER_INFO_KEY } from '../../constants';
 
 const { Header, Sider, Content } = Layout;
 const { Paragraph } = Typography;
@@ -68,15 +68,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = () => {
 
   const items: MenuProps['items'] = [
     {
-      key: '1',
-      label: (
-        <a href='/admin/info' className='text-base'>
-          Thông tin
-        </a>
-      ),
-    },
-    {
-      key: '2',
+      key: 'logout',
       label: (
         <a href='/admin/login' className='text-base' onClick={() => logOut()}>
           Đăng xuất
@@ -111,7 +103,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = () => {
           className='text-base'
         />
       </Sider>
-      <Layout>
+      <Layout className='max-h-[100vh] overflow-auto'>
         <Header
           style={{ background: colorBgContainer }}
           className='flex justify-between items-center pr-[40px] pl-0'
@@ -139,7 +131,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = () => {
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
           }}
-          className='mx-[16px] my-[24px] p-[24px]'
+          className='mx-[16px] my-[24px] p-[24px] overflow-auto'
         >
           <Outlet />
         </Content>

@@ -3,7 +3,7 @@ import {
   REFRESH_TOKEN_KEY,
   USER_CART_INFO,
   USER_INFO_KEY,
-} from '../constants/localStorageKey';
+} from '../constants';
 
 export const addProductToCart = (cardData: any) => {
   const userData = parseJSON(localStorage.getItem(USER_INFO_KEY), {});

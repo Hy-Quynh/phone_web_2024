@@ -1,6 +1,6 @@
 import React from "react";
 import { addProductToCart, parseJSON } from "../../utils/handleData";
-import { FORMAT_NUMBER, USER_INFO_KEY } from "../../constants/localStorageKey";
+import { FORMAT_NUMBER, USER_INFO_KEY } from "../../constants";
 import { message } from "antd";
 
 type ProductItemProps = {

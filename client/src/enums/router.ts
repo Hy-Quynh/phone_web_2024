@@ -21,4 +21,6 @@ export enum ROUTER {
   PRODUCT_PAGE = '/product',
   PRODUCT_DETAIL = '/product/:productId',
   CART_PAGE = '/cart',
+  PAYMENT_PAGE = '/payment',
+  PERSONAL_PAGE = '/personal',
 }

@@ -2,7 +2,6 @@ import { Button, Form, Grid, Input, message, theme, Typography } from 'antd';
 import { LockOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import './style.scss';
 import { ROUTER } from '../../enums/router';
-import { validateEmail } from '../../utils/validate';
 import { UserCreateBody } from '../../types/user';
 import { userAPI } from '../../services/user';
 import { useNavigate } from 'react-router-dom';

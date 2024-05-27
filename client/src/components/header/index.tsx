@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logOut, parseJSON } from '../../utils/handleData';
-import {
-  USER_CART_INFO,
-  USER_INFO_KEY,
-} from '../../constants/localStorageKey';
+import { USER_CART_INFO, USER_INFO_KEY } from '../../constants';
 import { categoryAPI } from '../../services/category';
 
 export default function Header() {
@@ -118,7 +115,7 @@ export default function Header() {
                     <button
                       className='dropdown-item'
                       type='button'
-                      onClick={() => navigate('/signup')}
+                      onClick={() => navigate('/register')}
                     >
                       Đăng ký
                     </button>
@@ -133,7 +130,7 @@ export default function Header() {
                   className='badge text-dark border border-dark rounded-circle'
                   style={{ paddingBottom: 2 }}
                 >
-                  {cartQuantity || 0}
+                  {userData?._id ? cartQuantity || 0 : 0}
                 </span>
               </a>
             </div>

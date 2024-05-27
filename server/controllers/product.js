@@ -16,6 +16,12 @@ module.exports = {
     res.json(results);
   }),
 
+  getBestSellingProduct: asyncHandler(async (req, res) => {
+    const { limit } = req.query;
+    const results = await productMiddleware.getBestSellingProduct(limit);
+    res.json(results);
+  }),
+
   getProductById: asyncHandler(async (req, res) => {
     const { productId } = req.params;
     const results = await productMiddleware.getProductById(productId);

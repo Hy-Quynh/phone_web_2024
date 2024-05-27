@@ -5,6 +5,7 @@ import { postAPI } from '../../../services/post';
 import { message } from 'antd';
 import { displayDate } from '../../../utils/datetime';
 import './style.scss';
+import PostComment from './components/postComment';
 
 export default function PostDetailPage() {
   const [postDetail, setPostDetail] = useState<any>({});
@@ -132,6 +133,9 @@ export default function PostDetailPage() {
                 </div>
               </div>
             </div>
+          </div>
+          <div className='mt-[100px]'>
+            <PostComment />
           </div>
         </div>
       </div>

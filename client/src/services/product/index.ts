@@ -19,6 +19,11 @@ export const productAPI = {
     return response;
   },
 
+  getBestSellingProduct: async (limit?: number) => {
+    const response = await axiosConfig.get(`${URL}/best-selling?limit=${limit}`);
+    return response;
+  },
+
   getProductById: async (productId: string) => {
     const response = await axiosConfig.get(`${URL}/${productId}`);
     return response;

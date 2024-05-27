@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StarOutlined, StarFilled, DeleteFilled } from '@ant-design/icons';
 import { parseJSON } from '../../../../utils/handleData';
-import { USER_INFO_KEY } from '../../../../constants/localStorageKey';
+import { USER_INFO_KEY } from '../../../../constants';
 import { commentAPI } from '../../../../services/comment';
 import { Button, Drawer, Pagination, Switch, message } from 'antd';
 import { displayDate } from '../../../../utils/datetime';

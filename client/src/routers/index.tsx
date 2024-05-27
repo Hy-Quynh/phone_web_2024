@@ -21,6 +21,9 @@ import ProductDetail from '../pages/clients/productDetail';
 import ProductPage from '../pages/clients/product';
 import AdminPrivate from '../layouts/admin/PrivateLayout';
 import CartPage from '../pages/clients/cart';
+import PaymentPage from '../pages/clients/payment';
+import PersonalPage from '../pages/clients/personalPage';
+import AdminOrder from '../pages/admins/order';
 
 const arrRoutes = [
   { path: ROUTER.LOGIN, element: <LoginPage /> },
@@ -70,6 +73,10 @@ const arrRoutes = [
         path: ROUTER.ADMIN_POST,
         element: <AdminPost />,
       },
+      {
+        path: ROUTER.ADMIN_ORDER,
+        element: <AdminOrder />,
+      },
     ],
   },
   {
@@ -103,6 +110,14 @@ const arrRoutes = [
       {
         path: ROUTER.CART_PAGE,
         element: <CartPage />,
+      },
+      {
+        path: ROUTER.PAYMENT_PAGE,
+        element: <PaymentPage />,
+      },
+      {
+        path: ROUTER.PERSONAL_PAGE,
+        element: <PersonalPage />,
       },
     ],
   },

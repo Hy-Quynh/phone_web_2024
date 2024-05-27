@@ -10,6 +10,8 @@ const categoryRouter = require('./routers/category');
 const postRouter = require('./routers/post');
 const productRouter = require('./routers/product');
 const commentRouter = require('./routers/comment');
+const checkoutRouter = require('./routers/checkout');
+const postCommentRouter = require('./routers/postComment');
 
 require('dotenv').config();
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 1;
@@ -40,6 +42,8 @@ routerPublic.use('/api/category', categoryRouter);
 routerPublic.use('/api/post', postRouter);
 routerPublic.use('/api/product', productRouter);
 routerPublic.use('/api/comment', commentRouter);
+routerPublic.use('/api/checkout', checkoutRouter);
+routerPublic.use('/api/post-comment', postCommentRouter);
 
 app.use(routerPublic);
 

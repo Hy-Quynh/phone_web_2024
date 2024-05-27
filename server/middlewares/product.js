@@ -36,22 +36,25 @@ module.exports = {
 
       const minExist = min && min !== 'undefined' && Number(min) > 0;
       const maxExist = max && max !== 'undefined' && Number(max) > 0;
-      const minPrice = Number(min)
-      const maxPrice = Number(max)
+      const minPrice = Number(min);
+      const maxPrice = Number(max);
 
       if (minExist && maxExist) {
         query.push({
           $match: {
-            $and: [{ price: { $gte: minPrice } }, { price: { $lte: maxPrice } }],
+            $and: [
+              { price: { $gte: minPrice } },
+              { price: { $lte: maxPrice } },
+            ],
           },
         });
-      }else if (minExist) {
+      } else if (minExist) {
         query.push({
           $match: {
             price: { $gte: minPrice },
           },
         });
-      }else if (maxExist) {
+      } else if (maxExist) {
         query.push({
           $match: {
             price: { $lte: maxPrice },
@@ -144,6 +147,91 @@ module.exports = {
           payload: {
             product: getProduct,
             total: totalProduct?.length,
+          },
+        };
+      } else {
+        throw new Error('Lấy thông tin sản phẩm thất bại');
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: {
+          message: error.message,
+        },
+      };
+    }
+  },
+
+  getBestSellingProduct: async (limit) => {
+    try {
+      const query = [
+        {
+          $addFields: {
+            soldQuantity: { $subtract: ['$initQuantity', '$currentQuantity'] },
+          },
+        },
+        {
+          $sort: { soldQuantity: -1 },
+        },
+        {
+          $limit: Number(limit),
+        },
+      ];
+
+      query.push(
+        ...[
+          {
+            $lookup: {
+              from: 'brands',
+              localField: 'brandId',
+              foreignField: '_id',
+              as: 'brand',
+            },
+          },
+          {
+            $unwind: '$brand',
+          },
+          {
+            $lookup: {
+              from: 'categorys',
+              localField: 'categoryId',
+              foreignField: '_id',
+              as: 'category',
+            },
+          },
+          {
+            $unwind: '$category',
+          },
+          {
+            $project: {
+              _id: 1,
+              name: 1,
+              image: 1,
+              brandId: 1,
+              categoryId: 1,
+              description: 1,
+              price: 1,
+              salePrice: 1,
+              initQuantity: 1,
+              currentQuantity: 1,
+              status: 1,
+              isDelete: 1,
+              createdAt: 1,
+              updatedAt: 1,
+              brandName: '$brand.name',
+              categoryName: '$category.name',
+            },
+          },
+        ]
+      );
+
+      const getProduct = await Product.aggregate(query);
+
+      if (getProduct) {
+        return {
+          success: true,
+          payload: {
+            product: getProduct,
           },
         };
       } else {

@@ -5,7 +5,7 @@ import {
   FORMAT_NUMBER,
   USER_CART_INFO,
   USER_INFO_KEY,
-} from '../../../constants/localStorageKey';
+} from '../../../constants';
 import { message } from 'antd';
 import { productAPI } from '../../../services/product';
 import { DeleteFilled, PlusOutlined, MinusOutlined } from '@ant-design/icons';
@@ -31,7 +31,6 @@ export default function CartPage() {
 
   useEffect(() => {
     if (!userData?._id) {
-      message.error('Bạn cần đăng nhập để thực hiện chức năng này');
       navigate('/login');
     }
   }, []);
@@ -169,7 +168,7 @@ export default function CartPage() {
                           }
                         }}
                       >
-                        <MinusOutlined className='text-[white]'/>
+                        <MinusOutlined className='text-[white]' />
                       </div>
                       <input
                         type='text'
