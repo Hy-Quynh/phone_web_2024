@@ -3,8 +3,8 @@ import axiosConfig from '../axiosConfig';
 const URL = '/post';
 
 export const postAPI = {
-  getAllPost: async (limit?: number, offset?: number, search?: string) => {
-    const response = await axiosConfig.get(`${URL}?limit=${limit}&offset=${offset}&search=${search}`);
+  getAllPost: async (limit?: number, offset?: number, search?: string, status?: boolean) => {
+    const response = await axiosConfig.get(`${URL}?limit=${limit}&offset=${offset}&search=${search}&status=${status}`);
     return response;
   },
 
@@ -13,8 +13,8 @@ export const postAPI = {
     return response;
   },
 
-  getRelativePost: async (postId: string, limit?: number, offset?: number) => {
-    const response = await axiosConfig.get(`${URL}/${postId}/relative?limit=${limit}&offset=${offset}`);
+  getRelativePost: async (postId: string, limit?: number, offset?: number, status?: boolean) => {
+    const response = await axiosConfig.get(`${URL}/${postId}/relative?limit=${limit}&offset=${offset}&status=${status}`);
     return response;
   },
 

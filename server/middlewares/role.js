@@ -1,9 +1,14 @@
 const Role = require('../models/role');
 
 module.exports = {
-  getAllRole: async () => {
+  getAllRole: async (status) => {
     try {
-      const roleRes = await Role.find({ isDelete: false }).lean().exec();
+      const query = {isDelete: false}
+      if (status !== 'undefined') {
+        query.status = status
+      }
+
+      const roleRes = await Role.find(query).lean().exec();
 
       return {
         success: true,

@@ -11,10 +11,11 @@ export const productAPI = {
     brand?: string,
     category?: string,
     min?: number,
-    max?: number
+    max?: number,
+    status?: boolean
   ) => {
     const response = await axiosConfig.get(
-      `${URL}?limit=${limit}&offset=${offset}&search=${search}&brand=${brand}&category=${category}&min=${min}&max=${max}`
+      `${URL}?limit=${limit}&offset=${offset}&search=${search}&brand=${brand}&category=${category}&min=${min}&max=${max}&status=${status}`
     );
     return response;
   },

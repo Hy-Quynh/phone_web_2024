@@ -1,9 +1,14 @@
 const Category = require('../models/category');
 
 module.exports = {
-  getAllCategory: async () => {
+  getAllCategory: async (status) => {
     try {
-      const categoryRes = await Category.find({ isDelete: false }).lean().exec();
+      const query = {isDelete: false}
+      if (status !== 'undefined') {
+        query.status = status
+      }
+
+      const categoryRes = await Category.find(query).lean().exec();
 
       return {
         success: true,

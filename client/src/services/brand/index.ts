@@ -3,8 +3,8 @@ import axiosConfig from '../axiosConfig';
 const URL = '/brand';
 
 export const brandAPI = {
-  getAllBrand: async () => {
-    const response = await axiosConfig.get(`${URL}`);
+  getAllBrand: async (status?: boolean) => {
+    const response = await axiosConfig.get(`${URL}?status=${status}`);
     return response;
   },
 

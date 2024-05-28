@@ -3,8 +3,8 @@ import axiosConfig from '../axiosConfig';
 const URL = '/category';
 
 export const categoryAPI = {
-  getAllCategory: async () => {
-    const response = await axiosConfig.get(`${URL}`);
+  getAllCategory: async (status?: boolean) => {
+    const response = await axiosConfig.get(`${URL}?status=${status}`);
     return response;
   },
 

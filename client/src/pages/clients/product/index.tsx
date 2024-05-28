@@ -68,7 +68,8 @@ export default function ProductPage() {
       brandId,
       categoryId,
       min,
-      max
+      max,
+      true
     );
 
     if (productRes?.data?.success) {

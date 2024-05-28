@@ -3,15 +3,15 @@ const postMiddleware = require('../middlewares/post');
 
 module.exports = {
   getAllPost: asyncHandler(async (req, res) => {
-    const { limit, offset, search } = req.query;
-    const results = await postMiddleware.getAllPost(limit, offset, search);
+    const { limit, offset, search, status } = req.query;
+    const results = await postMiddleware.getAllPost(limit, offset, search, status);
     res.json(results);
   }),
 
   getRelativePost: asyncHandler(async (req, res) => {
     const { postId } = req.params;
-    const { limit, offset } = req.query;
-    const results = await postMiddleware.getRelativePost(limit, offset, postId);
+    const { limit, offset, status } = req.query;
+    const results = await postMiddleware.getRelativePost(limit, offset, postId, status);
     res.json(results);
   }),
 

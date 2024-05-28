@@ -6,7 +6,7 @@ export default function HomepageCategory() {
 
   const getCategoryList = async () => {
     try {
-      const res = await categoryAPI.getAllCategory();
+      const res = await categoryAPI.getAllCategory(true);
 
       if (res?.data?.success) {
         setListCategory(res?.data?.payload?.category);

@@ -27,7 +27,7 @@ const ControlProductModal: React.FC<ControlProductProps> = (props) => {
 
   const getBrandList = async () => {
     try {
-      const res = await brandAPI.getAllBrand();
+      const res = await brandAPI.getAllBrand(true);
 
       if (res?.data?.success) {
         setListBrand(res?.data?.payload?.brand);
@@ -39,7 +39,7 @@ const ControlProductModal: React.FC<ControlProductProps> = (props) => {
 
   const getCategoryList = async () => {
     try {
-      const res = await categoryAPI.getAllCategory();
+      const res = await categoryAPI.getAllCategory(true);
 
       if (res?.data?.success) {
         setListCategory(res?.data?.payload?.category);

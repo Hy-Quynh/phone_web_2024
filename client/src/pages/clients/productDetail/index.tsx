@@ -42,7 +42,10 @@ export default function ProductDetail() {
         0,
         undefined,
         undefined,
-        productDetail?.categoryId
+        productDetail?.categoryId,
+        undefined,
+        undefined,
+        true
       );
 
       if (productRes?.data?.success) {

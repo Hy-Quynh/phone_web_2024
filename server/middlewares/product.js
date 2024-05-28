@@ -1,7 +1,7 @@
 const Product = require('../models/product');
 
 module.exports = {
-  getAllProduct: async (limit, offset, search, brand, category, min, max) => {
+  getAllProduct: async (limit, offset, search, brand, category, min, max, status) => {
     try {
       const newSearch = search && search !== 'undefined' ? search : '';
 
@@ -13,6 +13,14 @@ module.exports = {
           },
         },
       ];
+
+      if (status !== 'undefined') {
+        query.push({
+          $match: {
+            status: !!status
+          },
+        })
+      }
 
       if (brand && brand !== 'undefined') {
         query.push({
@@ -165,6 +173,11 @@ module.exports = {
   getBestSellingProduct: async (limit) => {
     try {
       const query = [
+        {
+          $match: {
+            status: true,
+          },
+        },
         {
           $addFields: {
             soldQuantity: { $subtract: ['$initQuantity', '$currentQuantity'] },

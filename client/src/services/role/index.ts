@@ -4,8 +4,8 @@ import axiosConfig from '../axiosConfig';
 const URL = '/role';
 
 export const roleAPI = {
-  getAllRole: async () => {
-    const response = await axiosConfig.get(`${URL}`);
+  getAllRole: async (status?: boolean) => {
+    const response = await axiosConfig.get(`${URL}?status=${status}`);
     return response;
   },
 

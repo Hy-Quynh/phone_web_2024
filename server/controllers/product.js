@@ -3,7 +3,7 @@ const productMiddleware = require('../middlewares/product');
 
 module.exports = {
   getAllProduct: asyncHandler(async (req, res) => {
-    const { limit, offset, search, brand, category, min, max } = req.query;
+    const { limit, offset, search, brand, category, min, max, status } = req.query;
     const results = await productMiddleware.getAllProduct(
       limit,
       offset,
@@ -11,7 +11,8 @@ module.exports = {
       brand,
       category,
       min,
-      max
+      max,
+      status
     );
     res.json(results);
   }),

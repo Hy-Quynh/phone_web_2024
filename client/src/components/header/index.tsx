@@ -68,9 +68,6 @@ export default function Header() {
               <a className='text-body mr-3' href='/about'>
                 Về chúng tôi
               </a>
-              <a className='text-body mr-3' href='/contact'>
-                Liên hệ
-              </a>
             </div>
           </div>
           <div className='col-lg-6 text-center text-lg-right'>

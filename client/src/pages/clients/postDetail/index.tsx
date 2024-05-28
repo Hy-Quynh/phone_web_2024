@@ -27,7 +27,7 @@ export default function PostDetailPage() {
     if (!postId) {
       return;
     }
-    const post = await postAPI.getRelativePost(postId, 5, 0);
+    const post = await postAPI.getRelativePost(postId, 5, 0, true);
 
     if (post?.data?.payload?.post?.length)
       setRelativePost(post?.data?.payload?.post);

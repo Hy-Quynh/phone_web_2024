@@ -1,7 +1,7 @@
 const Post = require('../models/post');
 
 module.exports = {
-  getAllPost: async (limit, offset, search) => {
+  getAllPost: async (limit, offset, search, status) => {
     try {
       const newSearch = search && search !== 'undefined' ? search : '';
 
@@ -13,6 +13,14 @@ module.exports = {
           },
         },
       ];
+
+      if (status !== 'undefined') {
+        query.push({
+          $match: {
+            status: !!status
+          },
+        })
+      }
 
       if (offset === 'undefined' && limit && limit !== 'undefined') {
         query.push(
@@ -209,7 +217,7 @@ module.exports = {
     }
   },
 
-  getRelativePost: async (limit, offset, postId) => {
+  getRelativePost: async (limit, offset, postId, status) => {
     try {
       const query = [
         {
@@ -221,6 +229,14 @@ module.exports = {
           },
         },
       ];
+
+      if (status !== 'undefined') {
+        query.push({
+          $match: {
+            status: !!status
+          },
+        })
+      }
 
       if (offset === 'undefined' && limit && limit !== 'undefined') {
         query.push(

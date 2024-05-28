@@ -3,7 +3,8 @@ const categoryMiddleware = require('../middlewares/category');
 
 module.exports = {
   getAllCategory: asyncHandler(async (req, res) => {
-    const results = await categoryMiddleware.getAllCategory();
+    const {status} = req?.query
+    const results = await categoryMiddleware.getAllCategory(status);
     res.json(results);
   }),
 

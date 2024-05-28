@@ -3,7 +3,8 @@ const brandMiddleware = require('../middlewares/brand');
 
 module.exports = {
   getAllBrand: asyncHandler(async (req, res) => {
-    const results = await brandMiddleware.getAllBrand();
+    const {status} = req?.query
+    const results = await brandMiddleware.getAllBrand(status);
     res.json(results);
   }),
 

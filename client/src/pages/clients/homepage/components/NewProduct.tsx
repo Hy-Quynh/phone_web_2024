@@ -7,7 +7,7 @@ export default function NewProduct() {
 
   const getProductList = async () => {
     try {
-      const res = await productAPI.getAllProduct(16, 0);
+      const res = await productAPI.getAllProduct(16, 0, undefined, undefined, undefined, undefined, undefined, true);
 
       if (res?.data?.success) {
         setProductList(res?.data?.payload?.product);

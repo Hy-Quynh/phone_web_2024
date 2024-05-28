@@ -6,7 +6,7 @@ export default function HomepageBrand() {
 
   const getBrandList = async () => {
     try {
-      const res = await brandAPI.getAllBrand();
+      const res = await brandAPI.getAllBrand(true);
 
       if (res?.data?.success) {
         setListBrand(res?.data?.payload?.brand);

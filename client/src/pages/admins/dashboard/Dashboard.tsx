@@ -93,14 +93,14 @@ function AdminDashboard() {
       <div className='flex items-center justify-center mt-[50px] gap-x-[100px] flex-wrap gap-y-[20px]'>
         <div className='bg-[#FFD334] py-[30px] px-[50px] rounded-[16px]'>
           <p className='text-xl font-bold'>Doanh thu</p>
-          <p className='text-[red] text-lg font-bold'>
+          <p className='text-[red] text-lg font-bold text-center'>
             {FORMAT_NUMBER.format(statisticData?.totalRevenue || 0)} VNĐ
           </p>
         </div>
 
         <div className='bg-[#FFD334] py-[30px] px-[50px] rounded-[16px]'>
           <p className='text-xl font-bold'>Tổng đơn hàng</p>
-          <p className='text-[red] text-lg font-bold'>
+          <p className='text-[red] text-lg font-bold text-center'>
             {statisticData?.totalOrders || 0}
           </p>
         </div>

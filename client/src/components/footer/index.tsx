@@ -43,10 +43,6 @@ export default function Footer() {
                     <i className="fa fa-angle-right mr-2" />
                     Về chúng tôi
                   </a>
-                  <a className="text-secondary mb-2" href="/contact">
-                    <i className="fa fa-angle-right mr-2" />
-                    Liên hệ
-                  </a>
                   <a className="text-secondary mb-2" href="/product">
                     <i className="fa fa-angle-right mr-2" />
                     Sản phẩm

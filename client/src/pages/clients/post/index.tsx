@@ -11,7 +11,7 @@ export default function PostPage() {
   const [searchText, setSearchText] = useState('');
 
   const getPostList = async (page: number, search?: string) => {
-    const post = await postAPI.getAllPost(POST_IN_PAGE, page, search);
+    const post = await postAPI.getAllPost(POST_IN_PAGE, page, search, true);
     const payload = post?.data?.payload;
 
     if (payload) {

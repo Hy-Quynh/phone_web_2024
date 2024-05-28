@@ -25,7 +25,7 @@ const ControlListAdmin: React.FC<ControlListAdminProps> = (props) => {
 
   const getRoleList = async () => {
     try {
-      const res = await roleAPI.getAllRole();
+      const res = await roleAPI.getAllRole(true);
 
       if (res?.data?.success) {
         setRoleList(res?.data?.payload?.role);

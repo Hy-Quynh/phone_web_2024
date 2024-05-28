@@ -1,9 +1,14 @@
 const Brand = require('../models/brand');
 
 module.exports = {
-  getAllBrand: async () => {
+  getAllBrand: async (status) => {
     try {
-      const brandRes = await Brand.find({ isDelete: false }).lean().exec();
+      const query = {isDelete: false}
+      if (status !== 'undefined') {
+        query.status = status
+      }
+
+      const brandRes = await Brand.find(query).lean().exec();
 
       return {
         success: true,

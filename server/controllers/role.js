@@ -3,7 +3,8 @@ const roleMiddleware = require('../middlewares/role');
 
 module.exports = {
   getAllRole: asyncHandler(async (req, res) => {
-    const results = await roleMiddleware.getAllRole();
+    const {status} = req?.query
+    const results = await roleMiddleware.getAllRole(status);
     res.json(results);
   }),
 
