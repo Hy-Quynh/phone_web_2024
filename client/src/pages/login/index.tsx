@@ -31,7 +31,10 @@ export default function LoginPage({ isAdmin }: LoginPageType) {
         const res = await userAPI.userLogin(signUpData);
 
         if (res?.data?.success) {
-          localStorage.setItem(USER_INFO_KEY, JSON.stringify(res?.data?.payload));
+          localStorage.setItem(
+            USER_INFO_KEY,
+            JSON.stringify(res?.data?.payload)
+          );
           message.success('Đăng nhập thành công. Chuyển sang trang chủ');
           setTimeout(() => {
             navigate('/');
@@ -42,7 +45,10 @@ export default function LoginPage({ isAdmin }: LoginPageType) {
       } else {
         const res = await adminAPI.adminLogin(signUpData);
         if (res?.data?.success) {
-          localStorage.setItem(USER_INFO_KEY, JSON.stringify(res?.data?.payload));
+          localStorage.setItem(
+            USER_INFO_KEY,
+            JSON.stringify(res?.data?.payload)
+          );
           message.success('Đăng nhập thành công. Chuyển sang trang quản trị');
           setTimeout(() => {
             navigate('/admin');
@@ -99,9 +105,11 @@ export default function LoginPage({ isAdmin }: LoginPageType) {
       <div style={styles.container}>
         <div style={styles.header}>
           {isAdmin ? (
-            <SettingOutlined style={styles.adminSettingIcon} />
+            <div className='flex justify-center mb-[10px]'>
+              <SettingOutlined style={styles.adminSettingIcon} />
+            </div>
           ) : (
-            <div className='logo mb-[10px]'>
+            <div className='logo mb-[10px] flex justify-center'>
               <a href='/' className='text-decoration-none'>
                 <span className='h1 text-uppercase text-primary bg-dark px-2 text-base'>
                   PHONE
@@ -113,10 +121,10 @@ export default function LoginPage({ isAdmin }: LoginPageType) {
             </div>
           )}
 
-          <Title style={styles.title}>
+          <Title style={styles.title} className='text-center'>
             {isAdmin ? 'QUẢN TRỊ VIÊN' : 'ĐĂNG NHẬP'}
           </Title>
-          <Text style={styles.text}>
+          <Text style={styles.text} className='text-center'>
             {isAdmin
               ? 'Dùng tài khoản quản trị viên để đăng nhập quản trị hệ thống'
               : 'Vui lòng đăng nhập để sử dụng đầy đủ dịch vụ của chúng tôi'}

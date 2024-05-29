@@ -81,7 +81,7 @@ export default function RegisterPage() {
     <section style={styles.section} className='register-page'>
       <div style={styles.container}>
         <div style={styles.header}>
-          <div className='logo mb-[10px]'>
+          <div className='logo mb-[10px] flex justify-center'>
             <a href='/' className='text-decoration-none'>
               <span className='h1 text-uppercase text-primary bg-dark px-2 text-base'>
                 PHONE
@@ -92,7 +92,7 @@ export default function RegisterPage() {
             </a>
           </div>
 
-          <Title style={styles.title}>ĐĂNG KÝ</Title>
+          <Title style={styles.title} className='text-center'>ĐĂNG KÝ</Title>
         </div>
         <Form
           name='normal_login'

@@ -61,20 +61,12 @@ export default function ForgotPasswordPage({ isAdmin }: ForgotPasswordType) {
     <section style={styles.section} className='forgot-password-page'>
       <div style={styles.container}>
         <div style={styles.header}>
-          {/* <div className='logo mb-[10px]'>
-            <a href='' className='text-decoration-none'>
-              <span className='h1 text-uppercase text-primary bg-dark px-2 text-base'>
-                PHONE
-              </span>
-              <span className='h1 text-uppercase text-dark bg-primary px-2 ml-n1 text-base'>
-                STORE
-              </span>
-            </a>
-          </div> */}
           {isAdmin ? (
-            <SettingOutlined style={styles.adminSettingIcon} />
+            <div className='flex justify-center mb-[10px]'>
+              <SettingOutlined style={styles.adminSettingIcon} />
+            </div>
           ) : (
-            <div className='logo mb-[10px]'>
+            <div className='logo mb-[10px] flex justify-center'>
               <a href='/' className='text-decoration-none'>
                 <span className='h1 text-uppercase text-primary bg-dark px-2 text-base'>
                   PHONE
@@ -86,8 +78,8 @@ export default function ForgotPasswordPage({ isAdmin }: ForgotPasswordType) {
             </div>
           )}
 
-          <Title style={styles.title}>QUÊN MẬT KHẨU</Title>
-          <Text style={styles.text}>
+          <Title style={styles.title} className='text-center'>QUÊN MẬT KHẨU</Title>
+          <Text style={styles.text} className='text-center'>
             Nhập vào tài khoản email để nhận OTP từ hệ thống
           </Text>
         </div>
