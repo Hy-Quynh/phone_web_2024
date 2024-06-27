@@ -143,6 +143,10 @@ export default function RegisterPage() {
                 required: true,
                 message: 'Vui lòng nhập mật khẩu',
               },
+              {
+                min: 5,
+                message: 'Mật khẩu cần ít nhất 5 kí tự',
+              },
             ]}
           >
             <Input.Password
